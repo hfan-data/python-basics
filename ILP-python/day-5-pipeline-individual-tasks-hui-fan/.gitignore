@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+report.json
+results.json
+pytest_output.txt
+
+# Reference solutions stay with the instructor, never in this repository
+solution/
+solution.py
+
+# Files the tests or your own runs may write
+trips.csv
+report.txt

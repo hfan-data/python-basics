@@ -1,0 +1,2 @@
+# Nothing to install: the lab uses only the standard library.
+# Run the tests with:  python3 -m unittest -v

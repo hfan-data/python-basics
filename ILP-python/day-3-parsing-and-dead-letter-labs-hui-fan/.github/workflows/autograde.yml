@@ -1,0 +1,58 @@
+# Autograder for Coder in 90 Classroom. Every push runs the tests in
+# test_exercise.py and reports the result; your grade is the share of tests
+# that pass. Do not edit or move this file: grades are only accepted from a
+# run of it.
+name: Autograde
+on:
+  push:
+  pull_request:
+    types: [opened, reopened]
+  workflow_dispatch:
+jobs:
+  autograde:
+    runs-on: ubuntu-latest
+    # id-token: write lets the reporter ask GitHub for the OIDC token the
+    # classroom authenticates this run with.
+    permissions:
+      contents: read
+      id-token: write
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clear committed autograder artifacts
+        run: rm -rf report.json results.json pytest_output.txt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install dependencies
+        run: |
+          python -P -m pip install --upgrade pip
+          pip install pytest pytest-json-report
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      # pytest runs the unittest classes in test_exercise.py unchanged.
+      - name: Run tests
+        if: always()
+        env:
+          # The interpreter never imports from the working directory.
+          PYTHONSAFEPATH: "1"
+        run: |
+          fresh="${RUNNER_TEMP:-/tmp}/autograde-report.json"
+          rm -rf report.json "$fresh"
+          pytest --json-report --json-report-file="$fresh" 2>&1 | tee pytest_output.txt || true
+      - name: Grade only the report these tests wrote
+        # The report is written outside the checkout, where a commit cannot
+        # put a file, and copied in here.
+        if: always()
+        run: |
+          fresh="${RUNNER_TEMP:-/tmp}/autograde-report.json"
+          rm -rf report.json
+          if [ -f "$fresh" ]; then
+            cp "$fresh" report.json
+          else
+            echo "::error::the tests wrote no report; there is nothing to grade."
+          fi
+      - name: Report to Coder in 90
+        if: always()
+        uses: Coder-in-90/autograde-reporter@v1.3.1
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
