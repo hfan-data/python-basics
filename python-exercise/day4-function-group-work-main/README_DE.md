@@ -1,5 +1,8 @@
 [English](README.md) | **Deutsch**
 
+Bearbeitete Aufgaben: Regelübersicht und Notizen zum Funktionsbaukasten auf
+[Deutsch](group_work_notes_DE.md), [English](group_work_notes_EN.md) und [中文](group_work_notes.md).
+
 # Tag 4 Vormittag: Leitfaden für die Gruppenarbeit
 
 Heute Vormittag gibt es keine Folien und kein Live-Coding. Du lernst die Ideen des Tages, indem

@@ -1,6 +1,7 @@
 **English** | [Deutsch](README_DE.md)
 
-Completed work: [Chinese rule sheet and toolkit notes](group_work_notes.md).
+Completed work: rule sheet and toolkit notes in [English](group_work_notes_EN.md),
+[Deutsch](group_work_notes_DE.md) and [中文](group_work_notes.md).
 Run `python3 fare_tools.py` for the report and `python3 -m unittest discover -v` for checks.
 
 # Day 4 morning: group work guide

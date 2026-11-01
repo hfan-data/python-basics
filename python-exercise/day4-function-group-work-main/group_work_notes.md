@@ -1,5 +1,7 @@
 # Day 4 小组作业记录
 
+**中文** | [English](group_work_notes_EN.md) | [Deutsch](group_work_notes_DE.md)
+
 以下是代码运行结果与参考解释；课堂上的个人预测、组员讨论和角色轮换需要本人完成。
 
 ## Activity 1：A–H 规则表
