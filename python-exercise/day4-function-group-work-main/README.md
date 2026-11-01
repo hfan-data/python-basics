@@ -1,5 +1,8 @@
 **English** | [Deutsch](README_DE.md)
 
+Completed work: [Chinese rule sheet and toolkit notes](group_work_notes.md).
+Run `python3 fare_tools.py` for the report and `python3 -m unittest discover -v` for checks.
+
 # Day 4 morning: group work guide
 
 This morning has no slides and no live coding. You learn today's ideas by predicting, running

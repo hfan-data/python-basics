@@ -1,4 +1,5 @@
 def double(x):
     return x * 2
 
-print("tools loaded")
+if __name__ == "__main__":
+    print("tools loaded")

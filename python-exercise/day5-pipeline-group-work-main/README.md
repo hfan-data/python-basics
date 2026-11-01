@@ -1,5 +1,9 @@
 **English** | [Deutsch](README_DE.md)
 
+Completed work: [Chinese pipeline design, trace table and debugging notes](group_work_notes.md).
+The corrected pipeline keeps the filename `broken_city_report.py`.
+Run `python3 broken_city_report.py` for the report and `python3 -m unittest discover -v` for checks.
+
 # Day 5 morning: group work guide
 
 No slides, no live coding, and no new syntax today. This morning your group designs and builds

@@ -1,13 +1,10 @@
-"""broken_city_report.py -- Day 5 Activity 2, debug station: the city report with four bugs.
-
-The same pipeline your group built in Activity 1, with four bugs planted in it. Run it, follow
-the debugging order (traceback, print the suspect value, try the line in the REPL), and fix one
-bug at a time. Do not compare with a solution until your group has a fix for all four.
+"""Completed Day 5 city report pipeline (original debugging exercise filename).
 
 Run:  python3 broken_city_report.py
 """
 
 import csv
+import math
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -36,17 +33,31 @@ def make_sample_csv() -> None:
 
 def parse_trip(row: dict) -> dict | None:
     """A typed trip, or None when the city is empty or the fare is not a positive number."""
-    city = row["city"]
+    city = row.get("city")
+    if not isinstance(city, str) or not city.strip():
+        return None
     city = city.strip().title()
     try:
         fare = float(row["fare"])
-        if fare <= 0:
+        if not math.isfinite(fare) or fare <= 0:
             return None
-    except ValueError:
+    except (KeyError, TypeError, ValueError):
         return None
-    if city == "":
-        return None
-    return {"trip_id": row["trip_id"], "city": city, "fare": fare}
+    return {"trip_id": row.get("trip_id", ""), "city": city, "fare": fare}
+
+
+def read_trips(csv_path: Path) -> tuple[list[dict], int]:
+    """Extract and validate CSV rows, returning typed trips and a skipped count."""
+    trips = []
+    skipped = 0
+    with csv_path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            trip = parse_trip(row)
+            if trip is None:
+                skipped += 1
+            else:
+                trips.append(trip)
+    return trips, skipped
 
 
 def city_totals(trips: list[dict]) -> dict[str, float]:
@@ -66,23 +77,19 @@ def format_report(totals: dict[str, float], skipped: int) -> list[str]:
     return lines
 
 
+def write_report(report_path: Path, lines: list[str]) -> None:
+    """Replace the report, so repeated runs produce the same file."""
+    with report_path.open("w", encoding="utf-8") as handle:
+        handle.write("\n".join(lines) + "\n")
+
+
 def main() -> None:
     if not CSV_PATH.exists():
         make_sample_csv()
 
-    trips = []
-    skipped = 0
-    with CSV_PATH.open(newline="", encoding="utf-8") as handle:
-        for row in csv.DictReader(handle):
-            trip = parse_trip(row)
-            if trip is None:
-                skipped += 1
-            else:
-                trips.append(trip)
-
+    trips, skipped = read_trips(CSV_PATH)
     lines = format_report(city_totals(trips), skipped)
-    with REPORT_PATH.open("a", encoding="utf-8") as handle:
-        handle.write("\n".join(lines) + "\n")
+    write_report(REPORT_PATH, lines)
     print("\n".join(lines))
 
 
